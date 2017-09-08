@@ -73,10 +73,10 @@ void imprimeCampo(){
 		printf("\n");
 	}
 }
-bool confere1(int Linha, int Coluna){
-	if(Tabuleiro[Linha][Coluna] != '#' && (Tabuleiro[Linha + 1][Coluna] != '#' && Tabuleiro[Linha][Coluna + 1] != '#' &&
-	Tabuleiro[Linha - 1][Coluna] != '#' && Tabuleiro[Linha][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna + 1] != '#' &&
-	Tabuleiro[Linha - 1][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna - 1] != '#' && Tabuleiro[Linha - 1][Coluna + 1] != '#')){
+bool confere(int Linha, int Coluna, char tab[10][10]){
+	if(tab[Linha][Coluna] != '#' && (tab[Linha + 1][Coluna] != '#' && tab[Linha][Coluna + 1] != '#' &&
+	tab[Linha - 1][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha + 1][Coluna + 1] != '#' &&
+	tab[Linha - 1][Coluna - 1] != '#' && tab[Linha + 1][Coluna - 1] != '#' && tab[Linha - 1][Coluna + 1] != '#')){
 		return true;
 	}
 	else
@@ -128,7 +128,7 @@ int main(){
 		}
 
 		//Verificar se as posicoes em volta e na posicao desejada pelo jogador ja nao tenha outro objeto inserido pelo mesmo.
-		if(confere1(Linha, Coluna)){
+		if(confere(Linha, Coluna, Tabuleiro)){
 			Tabuleiro[Linha][Coluna] = '#'; //modificar o valor da posicao permitida com uma hashtag (#)
 			TabuleiroId[Linha][Coluna] = 1; //modifica o valor da posicao com um valor que identificara esse tipo de nave, no caso um submarino
 			Contador++;
@@ -159,7 +159,7 @@ int main(){
 			scanf("%d", &Linha);
 		}
 
-		if(confere1(Linha, Coluna)){
+		if(confere(Linha, Coluna, Tabuleiro)){
 			Tabuleiro[Linha][Coluna] = '#';
 			TabuleiroId[Linha][Coluna] = 2;
 			Contador++;
@@ -274,9 +274,7 @@ int main(){
 			scanf("%d", &Linha);
 		}
 
-		if(Tabuleiro[Linha][Coluna] != '#' && (Tabuleiro[Linha + 1][Coluna] != '#' && Tabuleiro[Linha][Coluna + 1] != '#' &&
-		Tabuleiro[Linha - 1][Coluna] != '#' && Tabuleiro[Linha][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna + 1] != '#' &&
-		Tabuleiro[Linha - 1][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna - 1] != '#')){
+		if(confere(Linha, Coluna, Tabuleiro)){
 			Tabuleiro[Linha][Coluna] = '#';
 			TabuleiroId[Linha][Coluna] = 3;
 			Contador++;
@@ -393,9 +391,7 @@ int main(){
 		}
 
 
-		if(Tabuleiro[Linha][Coluna] != '#' && (Tabuleiro[Linha + 1][Coluna] != '#' && Tabuleiro[Linha][Coluna + 1] != '#' &&
-		Tabuleiro[Linha - 1][Coluna] != '#' && Tabuleiro[Linha][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna + 1] != '#' &&
-		Tabuleiro[Linha - 1][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna - 1] != '#' && Tabuleiro[Linha + 1][Coluna - 1] != '#')){
+		if(confere(Linha, Coluna, Tabuleiro)){
 			Tabuleiro[Linha][Coluna] = '#';
 			TabuleiroId[Linha][Coluna] = 4;
 			Contador++;
@@ -507,57 +503,62 @@ int main(){
 
 	while(Contador2 < 4){
 		printf("\nInsira a posicao dos submarinos (um por vez)");
-		printf("\nInsira a linha da posicao desejada");
-		scanf("%d", &Linha);
-		while(Linha < 0 || Linha > 9){
-			printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
-			scanf("%d", &Linha);
-		}
-		printf("Insira a coluna da posi��o desejada");
+
+		printf("Insira a coluna da posicao desejada: ");
 		scanf("%d", &Coluna);
 		while(Coluna < 0 || Coluna > 9){
 			printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
 			scanf("%d", &Coluna);
 		}
-		if(Tabuleiro2[Linha][Coluna] != '#' && (Tabuleiro2[Linha + 1][Coluna] != '#' && Tabuleiro2[Linha][Coluna + 1] != '#' && Tabuleiro2[Linha - 1][Coluna] != '#' && Tabuleiro2[Linha][Coluna - 1] != '#' && Tabuleiro2[Linha + 1][Coluna + 1] != '#' && Tabuleiro2[Linha - 1][Coluna - 1] != '#' && Tabuleiro2[Linha + 1][Coluna - 1] != '#' && Tabuleiro2[Linha - 1][Coluna + 1] != '#')){
+
+		printf("\nInsira a linha da posicao desejada: ");
+		scanf("%d", &Linha);
+		while(Linha < 0 || Linha > 9){
+			printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
+			scanf("%d", &Linha);
+		}
+
+		if(confere(Linha, Coluna, Tabuleiro2)){
 			Tabuleiro2[Linha][Coluna] = '#';
 			TabuleiroId2[Linha][Coluna] = 1;
 			Contador2++;
 		}
 		else{
-			printf("\nPosi��o j� ocupada ou proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.\n");
+			printf("\nPosicao ja ocupada ou proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
 		}
 
 		imprimeCampo();
 	}
 
 	while(Contador2 < 7){
-		printf("\nInsira a posi��o dos cruzadores (um por vez)");
-		printf("\nInsira a linha da posi��o desejada");
-		scanf("%d", &Linha);
-		while(Linha < 0 || Linha > 9){
-			printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
-			scanf("%d", &Linha);
-		}
-		printf("Insira a coluna da posi��o desejada");
+		printf("\nInsira a posicao dos cruzadores (um por vez)");
+
+		printf("Insira a coluna da posica desejada: ");
 		scanf("%d", &Coluna);
 		while(Coluna < 0 || Coluna > 9){
 			printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
 			scanf("%d", &Coluna);
 		}
 
-		if(Tabuleiro2[Linha][Coluna] != '#' && (Tabuleiro2[Linha + 1][Coluna] != '#' && Tabuleiro2[Linha][Coluna + 1] != '#' && Tabuleiro2[Linha - 1][Coluna] != '#' && Tabuleiro2[Linha][Coluna - 1] != '#' && Tabuleiro2[Linha + 1][Coluna + 1] != '#' && Tabuleiro2[Linha - 1][Coluna - 1] != '#' && Tabuleiro2[Linha + 1][Coluna - 1] != '#' && Tabuleiro2[Linha - 1][Coluna + 1] != '#')){
+		printf("\nInsira a linha da posicao desejada: ");
+		scanf("%d", &Linha);
+		while(Linha < 0 || Linha > 9){
+			printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
+			scanf("%d", &Linha);
+		}
+
+		if(confere(Linha, Coluna, Tabuleiro2)){
 			Tabuleiro2[Linha][Coluna] = '#';
 			TabuleiroId2[Linha][Coluna] = 2;
 			Contador2++;
 			while(Escolha < 1 || Escolha > 5){
-				printf("\nPara completar seu cruzador voc� ter� a escolha de qual lado posiciona-lo. 1 - Cima, 2 - Baixo, 3 - Esquerda, 4 - Direita.");
-				printf("\nCaso n�o seja possivel posicionar o objeto com as op��es anteriores ou queira cancelar a a��o tecle 5.");
-				printf("\nTenha em mente que teclar 5 REMOVERA o objeto incial de sua posi��o.");
+				printf("\nPara completar seu cruzador voce tere a escolha de qual lado posiciona-lo. 1 - Cima, 2 - Baixo, 3 - Esquerda, 4 - Direita.");
+				printf("\nCaso nao seja possivel posicionar o objeto com as opcoes anteriores ou queira cancelar a acao tecle 5.");
+				printf("\nTenha em mente que teclar 5 REMOVERA o objeto incial de sua posicao: ");
 				scanf("%d", &Escolha);
 				if(Escolha == 1){
 					if(Linha - 2 < 0){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					else if(Tabuleiro2[Linha - 2][Coluna] != '#' && Tabuleiro2[Linha - 1][Coluna - 1] != '#' && Tabuleiro2[Linha - 1][Coluna + 1] != '#' && Tabuleiro2[Linha - 2][Coluna - 1] != '#' && Tabuleiro2[Linha - 2][Coluna + 1] != '#'){
@@ -565,14 +566,14 @@ int main(){
 						TabuleiroId2[Linha - 1][Coluna] = 2;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido. Favor escolher outra op��o.");
+						printf("\nPosicao proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\nFavor escolher outra opcao.");
 						Escolha = 0;
 					}
 				}
 
 				if(Escolha == 2){
 					if(Linha + 2 > 9){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					else if(Tabuleiro2[Linha + 2][Coluna] != '#' && Tabuleiro2[Linha + 1][Coluna + 1] != '#' && Tabuleiro2[Linha + 1][Coluna - 1] != '#' && Tabuleiro2[Linha + 2][Coluna + 1] != '#' && Tabuleiro2[Linha + 2][Coluna - 1] != '#'){
@@ -614,6 +615,7 @@ int main(){
 						Escolha = 0;
 					}
 				}
+
 				if(Escolha == 5){
 					Tabuleiro2[Linha][Coluna] = '.';
 					TabuleiroId2[Linha][Coluna] = 0;
@@ -623,7 +625,7 @@ int main(){
 			}
 		}
 		else{
-			printf("\nPosi��o j� ocupada ou proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.\n");
+			printf("\nPosicao ja ocupada ou proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
 		}
 
 		Escolha = 0;
