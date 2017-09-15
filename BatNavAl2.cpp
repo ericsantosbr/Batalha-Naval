@@ -170,7 +170,7 @@ int main(){
 				printf("\nTenha em mente que teclar 5 REMOVERA o objeto incial de sua posicao: ");
 				scanf("%d", &Escolha);
 				if(Escolha == 1){ //Sera verificado se e possivel inserir as outras casas para cima.
-					if(Linha - 2 < 0){
+					if(Linha - 1 < 0){
 						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
@@ -187,7 +187,7 @@ int main(){
 				}
 
 				if(Escolha == 2){
-					if(Linha + 2 > 9){//Sera verificado se e possivel inserir as outras casas para baixo.
+					if(Linha + 1 > 9){//Sera verificado se e possivel inserir as outras casas para baixo.
 						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
 						Escolha = 0;
 					}
@@ -204,7 +204,7 @@ int main(){
 				}
 
 				if(Escolha == 3){
-					if(Coluna - 2 < 0){//Sera verificado se e possivel inserir as outras casas para esquerda.
+					if(Coluna - 1 < 0){//Sera verificado se e possivel inserir as outras casas para esquerda.
 						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
@@ -221,12 +221,13 @@ int main(){
 				}
 
 				if(Escolha == 4){
-					if(Coluna + 2 > 9){ //Ser� verificado se � possivel inserir as outras casas para direita.
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+					if(Coluna + 1 > 9){ //Sera verificado se e possivel inserir as outras casas para direita.
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
-					if(Tabuleiro[Linha][Coluna + 2] != '#' && Tabuleiro[Linha + 1][Coluna + 1] != '#' && Tabuleiro[Linha - 1][Coluna + 1] != '#' &&
-					Tabuleiro[Linha + 1][Coluna + 2] != '#' && Tabuleiro[Linha + 1][Coluna + 2] != '#'){
+					else if(Tabuleiro[Linha][Coluna + 2] != '#' && Tabuleiro[Linha + 1][Coluna + 1] != '#' &&
+					Tabuleiro[Linha - 1][Coluna + 1] != '#' && Tabuleiro[Linha + 1][Coluna + 2] != '#' &&
+					Tabuleiro[Linha + 1][Coluna + 2] != '#'){
 						Tabuleiro[Linha][Coluna + 1] = '#';
 						TabuleiroId[Linha][Coluna + 1] = 2;
 					}
@@ -746,9 +747,8 @@ int main(){
 			}
 		}
 		else{
-			printf("\nPosi��o j� ocupada ou proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.");
+			printf("\nPosicao ja ocupada ou proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
 		}
-
 
 		Escolha = 0;
 
