@@ -73,6 +73,23 @@ void imprimeCampo(){
 		printf("\n");
 	}
 }
+
+void imprimeCampo2(){
+	int i, j, k;
+	printf("\n  ");
+	for(k = 0; k < 10; k++){
+		printf("%d ", k);
+	}
+	printf("\n");
+	for(i = 0; i < 10; i++) {
+		printf("%d ", i);
+			for(j = 0; j < 10; j++) {
+					printf("%c ", Tabuleiro2[i][j]);
+			}
+		printf("\n");
+	}
+}
+
 bool confere(int Linha, int Coluna, char tab[10][10]){
 	if(tab[Linha][Coluna] != '#' && (tab[Linha + 1][Coluna] != '#' && tab[Linha][Coluna + 1] != '#' &&
 	tab[Linha - 1][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha + 1][Coluna + 1] != '#' &&
@@ -81,6 +98,28 @@ bool confere(int Linha, int Coluna, char tab[10][10]){
 	}
 	else
 		return false;
+}
+
+void limpaTabuleiros(){
+	for(int i = 0; i < 10; i++) {
+    	for(int j = 0; j < 10; j++) {
+        	Tabuleiro[i][j] = '.';
+		      Tabuleiro2[i][j] = '.';
+					TabuleiroId[i][j] = 0;
+					TabuleiroId2[i][j] = 0;
+    	}
+	}
+	for(int i = 0; i < 10; i++) {
+	    for(int j = 0; j < 10; j++) {
+	       	TabuleiroEsc2[i][j] = '?';
+	    }
+	}
+
+	for(int i = 0; i < 10; i++) {
+    	for(int j = 0; j < 10; j++) {
+        	TabuleiroEsc[i][j] = '?';
+    	}
+	}
 }
 
 int main(){
@@ -95,14 +134,7 @@ int main(){
 	Vez = 1;
 
 	// Limpeza dos Tabuleiros
-	for(int i = 0; i < 10; i++) {
-    	for(int j = 0; j < 10; j++) {
-        	Tabuleiro[i][j] = '.';
-		      Tabuleiro2[i][j] = '.';
-					TabuleiroId[i][j] = 0;
-					TabuleiroId2[i][j] = 0;
-    	}
-	}
+	limpaTabuleiros();
 
 	//Inicio do código utilizado para as ações do jogador 1 em relação a inserir a frota em seu tabuleiro
 	printf("Vez do jogador 1\n");
@@ -398,7 +430,7 @@ int main(){
 			while(Escolha < 1 || Escolha > 5){
 				printf("\nPara completar seu cruzador voce tera a escolha de qual lado posiciona-lo. 1 - Cima, 2 - Baixo, 3 - Esquerda, 4 - Direita.");
 				printf("\nCaso nao seja possivel posicionar o objeto com as opcoes anteriores ou queira cancelar a acao tecle 5.");
-				printf("\nTenha em mente que teclar 5 REMOVERA o objeto incial de sua posicao.");
+				printf("\nTenha em mente que teclar 5 REMOVERA o objeto incial de sua posicao: ");
 				scanf("%d", &Escolha);
 				if(Escolha == 1){
 					if(Linha - 4 < 0){
@@ -490,19 +522,20 @@ int main(){
 			imprimeCampo();
 		}
 		Escolha = 0;
-
 	}
 
 	//Aqui encerra a parte do código de inserir a frota do jogador 1
 
 	//Inicio do código utilizado para as ações do jogador 2 em relação a inserir a frota em seu tabuleiro
 	//Basicamente a mesma coisa com diferenca de tabuleiro e contador diferente
+	system("clear");
 	printf("Vez do jogador 2");
+	imprimeCampo2();
 
 	while(Contador2 < 4){
 		printf("\nInsira a posicao dos submarinos (um por vez)");
 
-		printf("Insira a coluna da posicao desejada: ");
+		printf("\nInsira a coluna da posicao desejada: ");
 		scanf("%d", &Coluna);
 		while(Coluna < 0 || Coluna > 9){
 			printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
@@ -525,13 +558,13 @@ int main(){
 			printf("\nPosicao ja ocupada ou proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
 		}
 
-		imprimeCampo();
+		imprimeCampo2();
 	}
 
 	while(Contador2 < 7){
 		printf("\nInsira a posicao dos cruzadores (um por vez)");
 
-		printf("Insira a coluna da posica desejada: ");
+		printf("\nInsira a coluna da posica desejada: ");
 		scanf("%d", &Coluna);
 		while(Coluna < 0 || Coluna > 9){
 			printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
@@ -627,20 +660,20 @@ int main(){
 		}
 
 		Escolha = 0;
-		imprimeCampo();
+		imprimeCampo2();
 	}
 
 	while(Contador2 < 9){
 		printf("\nInsira a posicao dos encouracado (um por vez)");
 
-		printf("Insira a coluna da posicao desejada: ");
+		printf("\nInsira a coluna da posicao desejada: ");
 		scanf("%d", &Coluna);
 		while(Coluna < 0 || Coluna > 9){
 			printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
 			scanf("%d", &Coluna);
 		}
 
-		printf("\nInsira a linha da posicao desejada");
+		printf("\nInsira a linha da posicao desejada: ");
 		scanf("%d", &Linha);
 		while(Linha < 0 || Linha > 9){
 			printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
@@ -741,13 +774,13 @@ int main(){
 
 		Escolha = 0;
 
-		imprimeCampo();
+		imprimeCampo2();
 
 	}
 
 	while(Contador2 < 10){
 		printf("\nInsira a posicao do porta-aviao");
-		printf("\nInsira a linha da posicao desejada: ");
+		printf("\n\nInsira a linha da posicao desejada: ");
 		scanf("%d", &Linha);
 		while(Linha < 0 || Linha > 9){
 			printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
@@ -855,35 +888,20 @@ int main(){
 			}
 		}
 		else{
-			printf("\nPosicao j� ocupada ou proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
+			printf("\nPosicao ja ocupada ou proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
 		}
 
 		Escolha = 0;
 
-		for(int i = 0; i < 10; i++) {
-    		for(int j = 0; j < 10; j++) {
-        		printf("%c ", Tabuleiro2[i][j]);
-    		}
-    	printf("\n");
-		}
+		imprimeCampo2();
 
 	}
 
 	//Aqui encerra a parte do código de inserir a frota  do jogador 2
 
-	//inicio do c�digo na parte combate
-	//Valores iniciais dos tabuleros dos jogador rival na vis�o do jogador combatente
-	for(int i = 0; i < 10; i++) {
-	    	for(int j = 0; j < 10; j++) {
-	        	TabuleiroEsc2[i][j] = '?';
-	    	}
-		}
+	//inicio do codigo na parte combate
+	//Valores iniciais dos tabuleros dos jogador rival na visao do jogador combatente
 
-	for(int i = 0; i < 10; i++) {
-    	for(int j = 0; j < 10; j++) {
-        	TabuleiroEsc[i][j] = '?';
-    	}
-	}
 
 	printf("\nHora do combate!");
 
