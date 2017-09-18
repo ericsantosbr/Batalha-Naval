@@ -403,7 +403,7 @@ int main(){
 				scanf("%d", &Escolha);
 				if(Escolha == 1){
 					if(Linha - 4 < 0){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					else if(Tabuleiro[Linha - 2][Coluna] != '#' && Tabuleiro[Linha - 3][Coluna] != '#' && Tabuleiro[Linha - 4][Coluna] != '#' &&
@@ -417,14 +417,14 @@ int main(){
 						TabuleiroId[Linha - 3][Coluna] = 4;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido. Favor escolher outra op��o.");
+						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido. Favor escolher outra opcao.");
 						Escolha = 0;
 					}
 				}
 
 				if(Escolha == 2){
 					if(Linha + 4 > 9){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					else if(Tabuleiro[Linha + 2][Coluna] != '#' && Tabuleiro[Linha + 3][Coluna] != '#' && Tabuleiro[Linha + 4][Coluna] != '#' && Tabuleiro[Linha + 2][Coluna + 1] != '#' && Tabuleiro[Linha + 2][Coluna - 1] != '#' && Tabuleiro[Linha + 3][Coluna + 1] != '#' && Tabuleiro[Linha + 3][Coluna - 1] != '#' && Tabuleiro[Linha + 4][Coluna - 1] != '#' && Tabuleiro[Linha + 4][Coluna + 1] != '#'){
@@ -436,14 +436,14 @@ int main(){
 						TabuleiroId[Linha + 3][Coluna] = 4;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.");
+						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
 						Escolha = 0;
 					}
 				}
 
 				if(Escolha == 3){
 					if(Coluna - 4 < 0){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					else if(Tabuleiro[Linha][Coluna - 2] != '#' && Tabuleiro[Linha][Coluna - 3] != '#' && Tabuleiro[Linha][Coluna - 4] != '#' && Tabuleiro[Linha + 1][Coluna - 2] != '#' && Tabuleiro[Linha - 1][Coluna - 2] != '#' && Tabuleiro[Linha - 1][Coluna - 3] != '#' && Tabuleiro[Linha + 1][Coluna - 3] != '#' && Tabuleiro[Linha - 1][Coluna - 4] != '#' && Tabuleiro[Linha + 1][Coluna - 4] != '#'){
@@ -455,14 +455,14 @@ int main(){
 						TabuleiroId[Linha][Coluna - 3] = 4;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.");
+						printf("\nPosicao proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
 						Escolha = 0;
 					}
 				}
 
 				if(Escolha == 4){
 					if(Coluna + 4 > 9){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					else if(Tabuleiro[Linha][Coluna + 2] != '#' && Tabuleiro[Linha][Coluna + 3] != '#' && Tabuleiro[Linha][Coluna + 4] != '#' && Tabuleiro[Linha + 1][Coluna + 2] != '#' && Tabuleiro[Linha - 1][Coluna + 2] != '#' && Tabuleiro[Linha + 1][Coluna + 3] != '#' && Tabuleiro[Linha + 1][Coluna + 3] != '#' && Tabuleiro[Linha - 1][Coluna + 4] != '#' && Tabuleiro[Linha + 1][Coluna + 4] != '#'){
@@ -474,7 +474,7 @@ int main(){
 					TabuleiroId[Linha][Coluna + 3] = 4;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.");
+						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
 						Escolha = 0;
 					}
 				}
@@ -487,7 +487,7 @@ int main(){
 			}
 		}
 		else{
-			printf("\nPosicao ja ocupada ou proxima de mais de outro objeto. Manter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
+			printf("\nPosicao ja ocupada ou proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
 		}
 
 		Escolha = 0;
@@ -499,7 +499,7 @@ int main(){
 	//Aqui encerra a parte do código de inserir a frota do jogador 1
 
 	//Inicio do código utilizado para as ações do jogador 2 em relação a inserir a frota em seu tabuleiro
-	//Basicamente a mesma coisa com diferen�a de tabuleiro e contador diferente
+	//Basicamente a mesma coisa com diferenca de tabuleiro e contador diferente
 	printf("Vez do jogador 2");
 
 	while(Contador2 < 4){
@@ -525,7 +525,7 @@ int main(){
 			Contador2++;
 		}
 		else{
-			printf("\nPosicao ja ocupada ou proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
+			printf("\nPosicao ja ocupada ou proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
 		}
 
 		imprimeCampo();
@@ -567,7 +567,7 @@ int main(){
 						TabuleiroId2[Linha - 1][Coluna] = 2;
 					}
 					else{
-						printf("\nPosicao proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\nFavor escolher outra opcao.");
+						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\nFavor escolher outra opcao.");
 						Escolha = 0;
 					}
 				}
@@ -582,14 +582,14 @@ int main(){
 						TabuleiroId2[Linha + 1][Coluna] = 2;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.");
+						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
 						Escolha = 0;
 					}
 				}
 
 				if(Escolha == 3){
 					if(Coluna - 2 < 0){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					else if(Tabuleiro2[Linha][Coluna - 2] != '#' && Tabuleiro2[Linha + 1][Coluna - 1] != '#' && Tabuleiro2[Linha - 1][Coluna - 1] != '#' && Tabuleiro2[Linha - 1][Coluna - 2] != '#' && Tabuleiro2[Linha + 1][Coluna - 2] != '#'){
@@ -597,14 +597,14 @@ int main(){
 						TabuleiroId2[Linha][Coluna - 1] = 2;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.");
+						printf("\nPosicao proxima de mais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
 						Escolha = 0;
 					}
 				}
 
 				if(Escolha == 4){
 					if(Coluna + 2 > 9){
-						printf("\nPosi��o fora do tabuleiro. Por favor escolher outra op��o.");
+						printf("\nPosicao fora do tabuleiro. Por favor escolher outra opcao.");
 						Escolha = 0;
 					}
 					if(Tabuleiro2[Linha][Coluna + 2] != '#' && Tabuleiro2[Linha + 1][Coluna + 1] != '#' && Tabuleiro2[Linha - 1][Coluna + 1] != '#' && Tabuleiro2[Linha + 1][Coluna + 2] != '#' && Tabuleiro2[Linha + 1][Coluna + 2] != '#'){
@@ -612,7 +612,7 @@ int main(){
 						TabuleiroId2[Linha][Coluna + 1] = 2;
 					}
 					else{
-						printf("\nPosi��o proxima de mais de outro objeto. Manter ao menos uma casa de dist�ncia de qualquer outro objeto ja inserido.");
+						printf("\nPosicao proxima de mais de outro objeto. Manter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
 						Escolha = 0;
 					}
 				}
