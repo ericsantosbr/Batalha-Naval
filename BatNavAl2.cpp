@@ -954,22 +954,22 @@ int main(){
 			else{ //Caso contrario sera mostrado um "." no tabuleiro de visao do jogador 1 e um ! no tabuleiro verdadeiro do jogador 2
 				TabuleiroEsc2[Linha][Coluna] = '.';
 				Tabuleiro2[Linha][Coluna] = '!';
-				printf("\nVoc� errou!");
+				printf("\nVoce errou!");
 			}
 
-			//Embaixo mostra o c�digo para identificar o objeto ao jogador ao ter afundado o objeto do jogador rival
+			//Embaixo mostra o cedigo para identificar o objeto ao jogador ao ter afundado o objeto do jogador rival
 			if(TabuleiroId2[Linha][Coluna] == 1){
-				printf("Voc� afundou um submarino do inimigo\n");
+				printf("Voce afundou um submarino do inimigo\n");
 			}
 			else if(TabuleiroId2[Linha][Coluna] == 2){
 				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 2) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 2) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 2) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 2)){
-					printf("Voc� afundou um cruzador\n");
+					printf("Voce afundou um cruzador\n");
 				}
 			}
 			else if(TabuleiroId2[Linha][Coluna] == 3){
 				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 3) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 3) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 3) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 3)){
 					if((Tabuleiro2[Linha + 2][Coluna] == 'X' && TabuleiroId2[Linha + 2][Coluna] == 3) || (Tabuleiro2[Linha][Coluna + 2] == 'X' && TabuleiroId2[Linha][Coluna + 2] == 3) || (Tabuleiro2[Linha - 2][Coluna] == 'X' && TabuleiroId2[Linha - 2][Coluna] == 3) || (Tabuleiro2[Linha][Coluna - 2] == 'X' && TabuleiroId2[Linha][Coluna - 2] == 3)){
-						printf("Voc� afundou um encoura�ado\n");
+						printf("Voce afundou um encouracado\n");
 					}
 				}
 			}
@@ -977,7 +977,7 @@ int main(){
 				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 4) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 4)){
 					if((Tabuleiro2[Linha + 2][Coluna] == 'X' && TabuleiroId2[Linha + 2][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 2] == 'X' && TabuleiroId2[Linha][Coluna + 2] == 4) || (Tabuleiro2[Linha - 2][Coluna] == 'X' && TabuleiroId2[Linha - 2][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 2] == 'X' && TabuleiroId2[Linha][Coluna - 2] == 4)){
 						if((Tabuleiro2[Linha + 3][Coluna] == 'X' && TabuleiroId2[Linha + 3][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 3] == 'X' && TabuleiroId2[Linha][Coluna + 3] == 4) || (Tabuleiro2[Linha - 3][Coluna] == 'X' && TabuleiroId2[Linha - 3][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 3] == 'X' && TabuleiroId2[Linha][Coluna - 3] == 4)){
-							printf("Voc� afundou um porta-avi�o.\n");
+							printf("Voce afundou um porta-avi�o.\n");
 						}
 					}
 				}
@@ -1036,31 +1036,31 @@ int main(){
 			if(Tabuleiro[Linha][Coluna] == '#' ){
 				TabuleiroEsc[Linha][Coluna] = 'X';
 				Tabuleiro[Linha][Coluna] = 'X';
-				printf("\nVoc� acertou.\n");
+				printf("\nVoce acertou.\n");
 				Acertos2++;
 			}
 			else if(Tabuleiro[Linha][Coluna] == 'X' || Tabuleiro[Linha][Coluna] == '!'){
-				printf("\nVoc� j� atirou nessa Posicao anteriormente.\n");
+				printf("\nVoce j� atirou nessa Posicao anteriormente.\n");
 			}
 			else{
 				TabuleiroEsc[Linha][Coluna] = '.';
 				Tabuleiro[Linha][Coluna] = '!';
-				printf("\nVoc� errou.\n");
+				printf("\nVoce errou.\n");
 
 			}
 
 			if(TabuleiroId[Linha][Coluna] == 1){
-				printf("Voc� afundou um submarino do inimigo\n");
+				printf("Voce afundou um submarino do inimigo\n");
 			}
 			else if(TabuleiroId[Linha][Coluna] == 2){
 				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 2) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 2) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 2) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 2)){
-					printf("Voc� afundou um cruzador\n");
+					printf("Voce afundou um cruzador\n");
 				}
 			}
 			else if(TabuleiroId[Linha][Coluna] == 3){
 				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 3) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 3) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 3) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 3)){
 					if((Tabuleiro[Linha + 2][Coluna] == 'X' && TabuleiroId[Linha + 2][Coluna] == 3) || (Tabuleiro[Linha][Coluna + 2] == 'X' && TabuleiroId[Linha][Coluna + 2] == 3) || (Tabuleiro[Linha - 2][Coluna] == 'X' && TabuleiroId[Linha - 2][Coluna] == 3) || (Tabuleiro[Linha][Coluna - 2] == 'X' && TabuleiroId[Linha][Coluna - 2] == 3)){
-						printf("Voc� afundo um encoura�ado");
+						printf("Voce afundo um encouracado");
 					}
 				}
 			}
@@ -1068,7 +1068,7 @@ int main(){
 				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 4) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 4)){
 					if((Tabuleiro[Linha + 2][Coluna] == 'X' && TabuleiroId[Linha + 2][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 2] == 'X' && TabuleiroId[Linha][Coluna + 2] == 4) || (Tabuleiro[Linha - 2][Coluna] == 'X' && TabuleiroId[Linha - 2][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 2] == 'X' && TabuleiroId[Linha][Coluna - 2] == 4)){
 						if((Tabuleiro[Linha + 3][Coluna] == 'X' && TabuleiroId[Linha + 3][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 3] == 'X' && TabuleiroId[Linha][Coluna + 3] == 4) || (Tabuleiro[Linha - 3][Coluna] == 'X' && TabuleiroId[Linha - 3][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 3] == 'X' && TabuleiroId[Linha][Coluna - 3] == 4)){
-							printf("Voc� afundou um porta-avi�o.\n");
+							printf("Voce afundou um porta-avi�o.\n");
 						}
 					}
 				}
