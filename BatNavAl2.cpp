@@ -925,30 +925,33 @@ int main(){
 	    		printf("\n");
 			}
 
-			printf("\nInsira a posição onde os misseis serão lançados.");
-			printf("\nInsira a linha da posição desejada");
-			scanf("%d", &Linha);
-			while(Linha < 0 || Linha > 9){
-				printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
-				scanf("%d", &Linha);
-			}
-			printf("Insira a coluna da posição desejada");
+			printf("\nInsira a posição onde os misseis serão lançados!");
+
+			printf("Insira a coluna da posição desejada: ");
 			scanf("%d", &Coluna);
 			while(Coluna < 0 || Coluna > 9){
 				printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
 				scanf("%d", &Coluna);
 			}
 
-			if(Tabuleiro2[Linha][Coluna] == '#' ){ //Caso a linha e a coluna batam com a # no tabuleiro verdadeiro do jogador 2, ser� efetuado e mostrado o X em ambos os tabuleiros
+			printf("\nInsira a linha da posição desejada: ");
+			scanf("%d", &Linha);
+			while(Linha < 0 || Linha > 9){
+				printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
+				scanf("%d", &Linha);
+			}
+
+
+			if(Tabuleiro2[Linha][Coluna] == '#' ){ //Caso a linha e a coluna batam com a # no tabuleiro verdadeiro do jogador 2, sera efetuado e mostrado o X em ambos os tabuleiros
 				TabuleiroEsc2[Linha][Coluna] = 'X';
 				Tabuleiro2[Linha][Coluna] = 'X';
-				printf("\nVoc� acertou!\n");
-				Acertos++; //o n�mero de acertos sobe
+				printf("\nVoce acertou!\n");
+				Acertos++; //o numero de acertos sobe
 			}
 			else if(Tabuleiro2[Linha][Coluna] == 'X' || Tabuleiro2[Linha][Coluna] == '!'){
-				printf("\nVoc� j� atirou nessa Posicao anteriormente.\n");
+				printf("\nVoce ja atirou nessa Posicao anteriormente.\n");
 			}
-			else{ //Caso contr�rio ser� mostrado um . no tabuleiro de vis�o do jogador 1 e um ! no tabuleiro verdadeiro do jogador 2
+			else{ //Caso contrario sera mostrado um "." no tabuleiro de visao do jogador 1 e um ! no tabuleiro verdadeiro do jogador 2
 				TabuleiroEsc2[Linha][Coluna] = '.';
 				Tabuleiro2[Linha][Coluna] = '!';
 				printf("\nVoc� errou!");
