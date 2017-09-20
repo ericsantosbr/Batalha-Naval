@@ -12,6 +12,7 @@
  * 2 - Identificar qual objeto e ao afundar (Ja funcional, no entanto em alguns casos ainda nao e identificado)
  * 3 - Optimizar o codigo com funcoes
  * 4 - Nao fazer a geracao do navio se perder caso o jogador insira uma casa proxima de uma ja ocupada e sim repetir o processo (Verificar se esse erro ainda ocorre)
+ * 5 - Terminar de adicionar as condicionais de checagem da funcao confere
 */
 
 #include<stdio.h>
