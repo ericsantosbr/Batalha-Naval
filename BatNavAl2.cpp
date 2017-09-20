@@ -92,7 +92,7 @@ void imprimeCampo2(){
 }
 
 bool confere(int Linha, int Coluna, char tab[10][10]){
-	if((coluna > 0 && coluna < 9) && (linha > 0 && linha < 9)){
+	if((Coluna > 0 && Coluna < 9) && (Linha > 0 && Linha < 9)){
 		if(tab[Linha][Coluna] != '#' && (tab[Linha + 1][Coluna] != '#' && tab[Linha][Coluna + 1] != '#' &&
 		tab[Linha - 1][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha + 1][Coluna + 1] != '#' &&
 		tab[Linha - 1][Coluna - 1] != '#' && tab[Linha + 1][Coluna - 1] != '#' && tab[Linha - 1][Coluna + 1] != '#')){
@@ -101,22 +101,23 @@ bool confere(int Linha, int Coluna, char tab[10][10]){
 		else
 			return false;
 	}
-	else if(coluna == 0 && linha == 0){
-		if(tab[linha][coluna] != '#' && tab[linha + 1][coluna] != '#' &&
-		   tab[linha + 1][coluna + 1] != '#' && tab[linha][coluna + 1] != '#'){
+	else if(Coluna == 0 && Linha == 0){
+		if(tab[Linha][Coluna] != '#' && tab[Linha + 1][Coluna] != '#' &&
+		   tab[Linha + 1][Coluna + 1] != '#' && tab[Linha][Coluna + 1] != '#'){
 			return true;
 		}
 		else
 			return false;		
 	}
-	else if((coluna == 9 && linha == 9){
-		if(tab[linha][coluna] != '#' && tab[linha - 1][coluna] != '#' &&
-		   tab[linha - 1][coluna - 1] != '#' && tab[linha][coluna - 1] != '#'){
+	else if((Coluna == 9 && Linha == 9){
+		if(tab[Linha][Coluna] != '#' && tab[Linha - 1][Coluna] != '#' &&
+		   tab[Linha - 1][Coluna - 1] != '#' && tab[Linha][Coluna - 1] != '#'){
 			return true;
 		   }
 		else
 			return false;
 	}
+	if((tab[Linha][Coluna] >
 }
 
 void limpaTabuleiros(){
