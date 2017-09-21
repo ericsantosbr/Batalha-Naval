@@ -12,7 +12,6 @@
  * 2 - Identificar qual objeto e ao afundar (Ja funcional, no entanto em alguns casos ainda nao e identificado)
  * 3 - Optimizar o codigo com funcoes
  * 4 - Nao fazer a geracao do navio se perder caso o jogador insira uma casa proxima de uma ja ocupada e sim repetir o processo (Verificar se esse erro ainda ocorre)
- * 5 - Terminar de adicionar as condicionais de checagem da funcao confere
 */
 
 #include<stdio.h>
@@ -92,6 +91,8 @@ void imprimeCampo2(){
 }
 
 bool confere(int Linha, int Coluna, char tab[10][10]){
+
+	// Caso a posicao seja alguma fora das extremidades
 	if((Coluna > 0 && Coluna < 9) && (Linha > 0 && Linha < 9)){
 		if(tab[Linha][Coluna] != '#' && (tab[Linha + 1][Coluna] != '#' && tab[Linha][Coluna + 1] != '#' &&
 		tab[Linha - 1][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha + 1][Coluna + 1] != '#' &&
@@ -101,6 +102,8 @@ bool confere(int Linha, int Coluna, char tab[10][10]){
 		else
 			return false;
 	}
+
+	// Caso a posicao seja alguma nos cantos
 	else if(Coluna == 0 && Linha == 0){
 		if(tab[Linha][Coluna] != '#' && tab[Linha + 1][Coluna] != '#' &&
 		   tab[Linha + 1][Coluna + 1] != '#' && tab[Linha][Coluna + 1] != '#'){
@@ -109,7 +112,8 @@ bool confere(int Linha, int Coluna, char tab[10][10]){
 		else
 			return false;		
 	}
-	else if((Coluna == 9 && Linha == 9){
+
+	else if((Coluna == 9 && Linha == 9)){
 		if(tab[Linha][Coluna] != '#' && tab[Linha - 1][Coluna] != '#' &&
 		   tab[Linha - 1][Coluna - 1] != '#' && tab[Linha][Coluna - 1] != '#'){
 			return true;
@@ -117,7 +121,47 @@ bool confere(int Linha, int Coluna, char tab[10][10]){
 		else
 			return false;
 	}
-	if((tab[Linha][Coluna] >
+
+	// Caso Linha esteja em um dos extremos (0 ou 9)
+	else if(Linha == 0){
+		if(tab[Linha][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha][Coluna + 1] != '#' &&
+		   tab[Linha + 1][Coluna + 1] != '#' && tab[Linha + 1][Coluna] != '#' && tab[Linha + 1][Coluna - 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	else if(Linha == 9){
+		if(tab[Linha][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha][Coluna + 1] != '#' &&
+		   tab[Linha - 1][Coluna - 1] != '#'&& tab[Linha - 1][Coluna] != '#' && tab[Linha - 1][Coluna + 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	// Caso Coluna esteja em um dos extremos (0 ou 9)
+	else if(Coluna == 0){
+		if(tab[Linha][Coluna] != '#' && tab[Linha - 1][Coluna] != '#' && tab[Linha + 1][Coluna] != '#' &&
+		   tab[Linha - 1][Coluna + 1] != '#' && tab[Linha][Coluna + 1] != '#' && tab[Linha + 1][Coluna + 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	else if(Coluna == 9){
+		if(tab[Linha][Coluna] != '#' && tab[Linha - 1][Coluna] != '#' && tab[Linha + 1][Coluna] != '#' &&
+		   tab[Linha - 1][Coluna - 1] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha + 1][Coluna - 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	else
+		return false;
 }
 
 void limpaTabuleiros(){
