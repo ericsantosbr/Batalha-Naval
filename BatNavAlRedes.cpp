@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Projeto desenvolvido por Bruno Rocha e Eric Santos como parte de avaliacao de uma materia da Fatec Sao Caetano
  *
  * Bruno Rocha - bru2014@gmail.com
@@ -30,6 +30,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
+#include<sys/socket.h>
+#include<sys/types.h>
+#include<netinet/in.h>
+#include<netdb.h>
+#include<arpa/inet.h>
+
+#define PORTA 1500
+#define MAX_MSG 100
 
 /*Variaveis para as linhas e colunas do vetor, contador (dos dois jogadores) em relação ao registro as frotas, escolha para opções que serão dadas
 aos jogadores, contagem de acertos e vez dos jogadores, e dois tabuleiros para identificação do tipo de nave da frota */
@@ -37,6 +45,265 @@ int TabuleiroId[10][10], TabuleiroId2[10][10], Linha, Coluna, Contador, Contador
 //Tabuleiros dos jogadores 1 e 2, o tabuleiro criado e o tabuleiro que deve ser desvendado
 char Tabuleiro[10][10], Tabuleiro2[10][10], TabuleiroEsc[10][10], TabuleiroEsc2[10][10], Prox;
 
+// Variaveis usadas na parte de rede
+char *ip;
+char msg[MAX_MSG];
+int tipo, soquete, pb, cliLen, n;
+
+
+void exemplo(bool sentido);
+void imprimeCampo();
+void imprimecampo2();
+bool confere(int Linha, int Coluna, char tab[10][10]);
+void limpaTabuleiros();
+void jogador1();
+void jogador2();
+
+int main(){
+	system("clear");
+	struct sockaddr_in servidor, cliente;
+	struct hostent *h;
+
+	//Definindo valor de algumas variaveis abaixo
+	Contador = 0;
+	Contador2 = 0;
+	Escolha = 0;
+	Acertos = 0;
+	Acertos2 = 0;
+	Vez = 1;
+	tipo = 0;
+
+	// Limpeza dos Tabuleiros
+	limpaTabuleiros();
+	printf("Você deseja jogar como servidor ou como cliente?\n1 para servidor e 2 para cliente: ");
+	scanf("%d", &tipo);
+
+	while(tipo != 1 && tipo != 2){
+		printf("\nOps! Opção invalida!");
+		printf("\nVocê deseja jogar como servidor ou como cliente?\n1 Para servidor e 2 para cliente: ");
+		scanf("%d", &tipo);
+	}
+	if(tipo == 1){
+		soquete = socket(AF_INET, SOCK_DGRAM, 0);
+		if(soquete < 0){
+			printf("Ops! Ha um problema. Não foi possivel iniciar o soquete\n");
+			exit(0);
+		}
+		servidor.sin_family = AF_INET;
+		servidor.sin_addr.s_addr = htonl(INADDR_ANY);
+		servidor.sin_port = htons(PORTA);
+		pb = bind(soquete, (struct sockaddr *) &servidor, sizeof(servidor));
+		if(pb < 0){
+			printf("Ops! Houve um problema ao fazer o bind!\n");
+			exit(0);
+		}
+
+		printf("Aguardando por dados na porta %u", PORTA);
+
+		bool aguarda = true;
+		while (aguarda){
+			memset(msg, 0x0, MAX_MSG);
+
+			cliLen = sizeof(cliente);
+			n = recvfrom(soquete, msg, MAX_MSG, 0, (struct sockaddr *) &cliente, %cliLen);
+		}
+	}
+
+	//Aqui encerra a parte do código de inserir a frota do jogador 1
+
+	//inicio do codigo na parte combate
+	//Valores iniciais dos tabuleros dos jogador rival na visao do jogador combatente
+
+
+	printf("\nHora do combate!");
+
+	while(Acertos < 20 && Acertos2 < 20){//Enquanto nenhum dos dois jogadores totalizar 20 acertos no jogo, o jogo continua
+		//inicio do código na parte de combate do jogador 1
+		if(Vez == 1){ //Vez do jogador 1
+			printf("\nVez do jogador 1");
+			printf("Situação atual de sua frota:\n"); //Auto-explicativo
+			for(int i = 0; i < 10; i++) {
+	    		for(int j = 0; j < 10; j++) {
+	        		printf("%c ", Tabuleiro[i][j]);
+	    		}
+	    		printf("\n");
+			}
+
+			printf("Situação atual da frota de seu inimigo:\n"); //Tabuleiro do jogador 2 na visao do jogador 1
+			for(int i = 0; i < 10; i++) {
+	    		for(int j = 0; j < 10; j++) {
+	        		printf("%c ", TabuleiroEsc2[i][j]);
+	    		}
+	    		printf("\n");
+			}
+
+			printf("\nInsira a posição onde os misseis serão lançados!");
+
+			printf("Insira a coluna da posição desejada: ");
+			scanf("%d", &Coluna);
+			while(Coluna < 0 || Coluna > 9){
+				printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
+				scanf("%d", &Coluna);
+			}
+
+			printf("\nInsira a linha da posição desejada: ");
+			scanf("%d", &Linha);
+			while(Linha < 0 || Linha > 9){
+				printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
+				scanf("%d", &Linha);
+			}
+
+
+			if(Tabuleiro2[Linha][Coluna] == '#' ){ //Caso a linha e a coluna batam com a # no tabuleiro verdadeiro do jogador 2, sera efetuado e mostrado o X em ambos os tabuleiros
+				TabuleiroEsc2[Linha][Coluna] = 'X';
+				Tabuleiro2[Linha][Coluna] = 'X';
+				printf("\nVoce acertou!\n");
+				Acertos++; //o numero de acertos sobe
+			}
+			else if(Tabuleiro2[Linha][Coluna] == 'X' || Tabuleiro2[Linha][Coluna] == '!'){
+				printf("\nVoce ja atirou nessa Posicao anteriormente.\n");
+			}
+			else{ //Caso contrario sera mostrado um "." no tabuleiro de visao do jogador 1 e um ! no tabuleiro verdadeiro do jogador 2
+				TabuleiroEsc2[Linha][Coluna] = '.';
+				Tabuleiro2[Linha][Coluna] = '!';
+				printf("\nVoce errou!");
+			}
+
+			//Embaixo mostra o cedigo para identificar o objeto ao jogador ao ter afundado o objeto do jogador rival
+			if(TabuleiroId2[Linha][Coluna] == 1){
+				printf("Voce afundou um submarino do inimigo\n");
+			}
+			else if(TabuleiroId2[Linha][Coluna] == 2){
+				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 2) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 2) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 2) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 2)){
+					printf("Voce afundou um cruzador\n");
+				}
+			}
+			else if(TabuleiroId2[Linha][Coluna] == 3){
+				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 3) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 3) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 3) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 3)){
+					if((Tabuleiro2[Linha + 2][Coluna] == 'X' && TabuleiroId2[Linha + 2][Coluna] == 3) || (Tabuleiro2[Linha][Coluna + 2] == 'X' && TabuleiroId2[Linha][Coluna + 2] == 3) || (Tabuleiro2[Linha - 2][Coluna] == 'X' && TabuleiroId2[Linha - 2][Coluna] == 3) || (Tabuleiro2[Linha][Coluna - 2] == 'X' && TabuleiroId2[Linha][Coluna - 2] == 3)){
+						printf("Voce afundou um encouracado\n");
+					}
+				}
+			}
+			else if(TabuleiroId2[Linha][Coluna] == 4){
+				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 4) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 4)){
+					if((Tabuleiro2[Linha + 2][Coluna] == 'X' && TabuleiroId2[Linha + 2][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 2] == 'X' && TabuleiroId2[Linha][Coluna + 2] == 4) || (Tabuleiro2[Linha - 2][Coluna] == 'X' && TabuleiroId2[Linha - 2][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 2] == 'X' && TabuleiroId2[Linha][Coluna - 2] == 4)){
+						if((Tabuleiro2[Linha + 3][Coluna] == 'X' && TabuleiroId2[Linha + 3][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 3] == 'X' && TabuleiroId2[Linha][Coluna + 3] == 4) || (Tabuleiro2[Linha - 3][Coluna] == 'X' && TabuleiroId2[Linha - 3][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 3] == 'X' && TabuleiroId2[Linha][Coluna - 3] == 4)){
+							printf("Voce afundou um porta-aviao.\n");
+						}
+					}
+				}
+			}
+
+			//Tabuleiro foi atualizado
+			for(int i = 0; i < 10; i++) {
+		    	for(int j = 0; j < 10; j++) {
+		        	printf("%c ", TabuleiroEsc2[i][j]);
+		    	}
+		    printf("\n");
+			}
+
+			if(Acertos == 20){ //Caso de 20 acertos o jogo eh encerrado
+				printf("\n\nJogador 1 ganhou! Fim de jogo.");
+			}
+			else{ //Caso contrario, passa a vez
+				Vez++;
+			}
+
+		}
+		//Fim do codigo na parte de combate do jogador 1 e inicio do jogador 2
+		//Basicamente a mesma coisa do jogador 1, substituindo apenas as variaveis dos tabuleiros e de acerto
+		if(Vez == 2){
+			printf("\nVez do jogador 2");
+			printf("Situacao atual da sua frota:\n");
+			for(int i = 0; i < 10; i++) {
+	    		for(int j = 0; j < 10; j++) {
+	        		printf("%c ", Tabuleiro2[i][j]);
+	    		}
+	    		printf("\n");
+			}
+
+			printf("\nSituacao atual da frota de seu inimigo:\n");
+			for(int i = 0; i < 10; i++) {
+	    		for(int j = 0; j < 10; j++) {
+	        		printf("%c ", TabuleiroEsc[i][j]);
+	    		}
+	    		printf("\n");
+			}
+
+			printf("\nInsira a Posicao onde os misseis serao lancados.");
+			printf("\nInsira a linha da Posicao desejada: ");
+			scanf("%d", &Linha);
+			while(Linha < 0 || Linha > 9){
+				printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
+				scanf("%d", &Linha);
+			}
+			printf("Insira a coluna da Posicao desejada");
+			scanf("%d", &Coluna);
+			while(Coluna < 0 || Coluna > 9){
+				printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
+				scanf("%d", &Coluna);
+			}
+
+			if(Tabuleiro[Linha][Coluna] == '#' ){
+				TabuleiroEsc[Linha][Coluna] = 'X';
+				Tabuleiro[Linha][Coluna] = 'X';
+				printf("\nVoce acertou.\n");
+				Acertos2++;
+			}
+			else if(Tabuleiro[Linha][Coluna] == 'X' || Tabuleiro[Linha][Coluna] == '!'){
+				printf("\nVoce ja atirou nessa Posicao anteriormente.\n");
+			}
+			else{
+				TabuleiroEsc[Linha][Coluna] = '.';
+				Tabuleiro[Linha][Coluna] = '!';
+				printf("\nVoce errou.\n");
+
+			}
+
+			if(TabuleiroId[Linha][Coluna] == 1){
+				printf("Voce afundou um submarino do inimigo\n");
+			}
+			else if(TabuleiroId[Linha][Coluna] == 2){
+				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 2) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 2) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 2) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 2)){
+					printf("Voce afundou um cruzador\n");
+				}
+			}
+			else if(TabuleiroId[Linha][Coluna] == 3){
+				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 3) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 3) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 3) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 3)){
+					if((Tabuleiro[Linha + 2][Coluna] == 'X' && TabuleiroId[Linha + 2][Coluna] == 3) || (Tabuleiro[Linha][Coluna + 2] == 'X' && TabuleiroId[Linha][Coluna + 2] == 3) || (Tabuleiro[Linha - 2][Coluna] == 'X' && TabuleiroId[Linha - 2][Coluna] == 3) || (Tabuleiro[Linha][Coluna - 2] == 'X' && TabuleiroId[Linha][Coluna - 2] == 3)){
+						printf("Voce afundo um encouracado");
+					}
+				}
+			}
+			else if(TabuleiroId[Linha][Coluna] == 4){
+				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 4) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 4)){
+					if((Tabuleiro[Linha + 2][Coluna] == 'X' && TabuleiroId[Linha + 2][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 2] == 'X' && TabuleiroId[Linha][Coluna + 2] == 4) || (Tabuleiro[Linha - 2][Coluna] == 'X' && TabuleiroId[Linha - 2][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 2] == 'X' && TabuleiroId[Linha][Coluna - 2] == 4)){
+						if((Tabuleiro[Linha + 3][Coluna] == 'X' && TabuleiroId[Linha + 3][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 3] == 'X' && TabuleiroId[Linha][Coluna + 3] == 4) || (Tabuleiro[Linha - 3][Coluna] == 'X' && TabuleiroId[Linha - 3][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 3] == 'X' && TabuleiroId[Linha][Coluna - 3] == 4)){
+							printf("Voce afundou um porta-aviao.\n");
+						}
+					}
+				}
+			}
+
+			for(int i = 0; i < 10; i++) {
+		    	for(int j = 0; j < 10; j++) {
+		        	printf("%c ", TabuleiroEsc[i][j]);
+		    	}
+		    printf("\n");
+			}
+
+			if(Acertos2 == 20){
+				printf("\n\nJogador 2 ganhou! Fim de jogo.");
+			}
+			else{ //Caso contrario, passa a vez
+				Vez--;
+			}
+
+		}
+	}
+	return(0);
+}
 
 // Imprime o tabuleiro de exemplo
 // True para vertical, false para horizontal
@@ -69,8 +336,8 @@ void exemplo(bool sentido){
 			}
 		}
 	}
-
 }
+
 void imprimeCampo(){
 	int i, j, k;
 	printf("\n  ");
@@ -199,22 +466,10 @@ void limpaTabuleiros(){
 	}
 }
 
-int main(){
-	system("clear");
 
-	//Definindo valor de algumas variaveis abaixo
-	Contador = 0;
-	Contador2 = 0;
-	Escolha = 0;
-	Acertos = 0;
-	Acertos2 = 0;
-	Vez = 1;
-
-	// Limpeza dos Tabuleiros
-	limpaTabuleiros();
-
+void jogador1(){
 	//Inicio do código utilizado para as ações do jogador 1 em relação a inserir a frota em seu tabuleiro
-	printf("Vez do jogador 1\n");
+	printf("Você é o jogador 1!\n");
 	imprimeCampo();
 
 	while(Contador < 4){ //Contador utilizado para inserir todos os submarinos no tabuleiro
@@ -600,9 +855,9 @@ int main(){
 		}
 		Escolha = 0;
 	}
+}
 
-	//Aqui encerra a parte do código de inserir a frota do jogador 1
-
+void jogador2(){
 	//Inicio do código utilizado para as ações do jogador 2 em relação a inserir a frota em seu tabuleiro
 	//Basicamente a mesma coisa com diferenca de tabuleiro e contador diferente
 	system("clear");
@@ -973,199 +1228,6 @@ int main(){
 		imprimeCampo2();
 
 	}
+}
 
 	//Aqui encerra a parte do código de inserir a frota  do jogador 2
-
-	//inicio do codigo na parte combate
-	//Valores iniciais dos tabuleros dos jogador rival na visao do jogador combatente
-
-
-	printf("\nHora do combate!");
-
-	while(Acertos < 20 && Acertos2 < 20){//Enquanto nenhum dos dois jogadores totalizar 20 acertos no jogo, o jogo continua
-		//inicio do código na parte de combate do jogador 1
-		if(Vez == 1){ //Vez do jogador 1
-			printf("\nVez do jogador 1");
-			printf("Situação atual de sua frota:\n"); //Auto-explicativo
-			for(int i = 0; i < 10; i++) {
-	    		for(int j = 0; j < 10; j++) {
-	        		printf("%c ", Tabuleiro[i][j]);
-	    		}
-	    		printf("\n");
-			}
-
-			printf("Situação atual da frota de seu inimigo:\n"); //Tabuleiro do jogador 2 na visao do jogador 1
-			for(int i = 0; i < 10; i++) {
-	    		for(int j = 0; j < 10; j++) {
-	        		printf("%c ", TabuleiroEsc2[i][j]);
-	    		}
-	    		printf("\n");
-			}
-
-			printf("\nInsira a posição onde os misseis serão lançados!");
-
-			printf("Insira a coluna da posição desejada: ");
-			scanf("%d", &Coluna);
-			while(Coluna < 0 || Coluna > 9){
-				printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
-				scanf("%d", &Coluna);
-			}
-
-			printf("\nInsira a linha da posição desejada: ");
-			scanf("%d", &Linha);
-			while(Linha < 0 || Linha > 9){
-				printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
-				scanf("%d", &Linha);
-			}
-
-
-			if(Tabuleiro2[Linha][Coluna] == '#' ){ //Caso a linha e a coluna batam com a # no tabuleiro verdadeiro do jogador 2, sera efetuado e mostrado o X em ambos os tabuleiros
-				TabuleiroEsc2[Linha][Coluna] = 'X';
-				Tabuleiro2[Linha][Coluna] = 'X';
-				printf("\nVoce acertou!\n");
-				Acertos++; //o numero de acertos sobe
-			}
-			else if(Tabuleiro2[Linha][Coluna] == 'X' || Tabuleiro2[Linha][Coluna] == '!'){
-				printf("\nVoce ja atirou nessa Posicao anteriormente.\n");
-			}
-			else{ //Caso contrario sera mostrado um "." no tabuleiro de visao do jogador 1 e um ! no tabuleiro verdadeiro do jogador 2
-				TabuleiroEsc2[Linha][Coluna] = '.';
-				Tabuleiro2[Linha][Coluna] = '!';
-				printf("\nVoce errou!");
-			}
-
-			//Embaixo mostra o cedigo para identificar o objeto ao jogador ao ter afundado o objeto do jogador rival
-			if(TabuleiroId2[Linha][Coluna] == 1){
-				printf("Voce afundou um submarino do inimigo\n");
-			}
-			else if(TabuleiroId2[Linha][Coluna] == 2){
-				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 2) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 2) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 2) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 2)){
-					printf("Voce afundou um cruzador\n");
-				}
-			}
-			else if(TabuleiroId2[Linha][Coluna] == 3){
-				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 3) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 3) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 3) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 3)){
-					if((Tabuleiro2[Linha + 2][Coluna] == 'X' && TabuleiroId2[Linha + 2][Coluna] == 3) || (Tabuleiro2[Linha][Coluna + 2] == 'X' && TabuleiroId2[Linha][Coluna + 2] == 3) || (Tabuleiro2[Linha - 2][Coluna] == 'X' && TabuleiroId2[Linha - 2][Coluna] == 3) || (Tabuleiro2[Linha][Coluna - 2] == 'X' && TabuleiroId2[Linha][Coluna - 2] == 3)){
-						printf("Voce afundou um encouracado\n");
-					}
-				}
-			}
-			else if(TabuleiroId2[Linha][Coluna] == 4){
-				if((Tabuleiro2[Linha + 1][Coluna] == 'X' && TabuleiroId2[Linha + 1][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 1] == 'X' && TabuleiroId2[Linha][Coluna + 1] == 4) || (Tabuleiro2[Linha - 1][Coluna] == 'X' && TabuleiroId2[Linha - 1][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 1] == 'X' && TabuleiroId2[Linha][Coluna - 1] == 4)){
-					if((Tabuleiro2[Linha + 2][Coluna] == 'X' && TabuleiroId2[Linha + 2][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 2] == 'X' && TabuleiroId2[Linha][Coluna + 2] == 4) || (Tabuleiro2[Linha - 2][Coluna] == 'X' && TabuleiroId2[Linha - 2][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 2] == 'X' && TabuleiroId2[Linha][Coluna - 2] == 4)){
-						if((Tabuleiro2[Linha + 3][Coluna] == 'X' && TabuleiroId2[Linha + 3][Coluna] == 4) || (Tabuleiro2[Linha][Coluna + 3] == 'X' && TabuleiroId2[Linha][Coluna + 3] == 4) || (Tabuleiro2[Linha - 3][Coluna] == 'X' && TabuleiroId2[Linha - 3][Coluna] == 4) || (Tabuleiro2[Linha][Coluna - 3] == 'X' && TabuleiroId2[Linha][Coluna - 3] == 4)){
-							printf("Voce afundou um porta-aviao.\n");
-						}
-					}
-				}
-			}
-
-			//Tabuleiro foi atualizado
-			for(int i = 0; i < 10; i++) {
-		    	for(int j = 0; j < 10; j++) {
-		        	printf("%c ", TabuleiroEsc2[i][j]);
-		    	}
-		    printf("\n");
-			}
-
-			if(Acertos == 20){ //Caso de 20 acertos o jogo eh encerrado
-				printf("\n\nJogador 1 ganhou! Fim de jogo.");
-			}
-			else{ //Caso contrario, passa a vez
-				Vez++;
-			}
-
-		}
-		//Fim do codigo na parte de combate do jogador 1 e inicio do jogador 2
-		//Basicamente a mesma coisa do jogador 1, substituindo apenas as variaveis dos tabuleiros e de acerto
-		if(Vez == 2){
-			printf("\nVez do jogador 2");
-			printf("Situacao atual da sua frota:\n");
-			for(int i = 0; i < 10; i++) {
-	    		for(int j = 0; j < 10; j++) {
-	        		printf("%c ", Tabuleiro2[i][j]);
-	    		}
-	    		printf("\n");
-			}
-
-			printf("\nSituacao atual da frota de seu inimigo:\n");
-			for(int i = 0; i < 10; i++) {
-	    		for(int j = 0; j < 10; j++) {
-	        		printf("%c ", TabuleiroEsc[i][j]);
-	    		}
-	    		printf("\n");
-			}
-
-			printf("\nInsira a Posicao onde os misseis serao lancados.");
-			printf("\nInsira a linha da Posicao desejada: ");
-			scanf("%d", &Linha);
-			while(Linha < 0 || Linha > 9){
-				printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
-				scanf("%d", &Linha);
-			}
-			printf("Insira a coluna da Posicao desejada");
-			scanf("%d", &Coluna);
-			while(Coluna < 0 || Coluna > 9){
-				printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
-				scanf("%d", &Coluna);
-			}
-
-			if(Tabuleiro[Linha][Coluna] == '#' ){
-				TabuleiroEsc[Linha][Coluna] = 'X';
-				Tabuleiro[Linha][Coluna] = 'X';
-				printf("\nVoce acertou.\n");
-				Acertos2++;
-			}
-			else if(Tabuleiro[Linha][Coluna] == 'X' || Tabuleiro[Linha][Coluna] == '!'){
-				printf("\nVoce ja atirou nessa Posicao anteriormente.\n");
-			}
-			else{
-				TabuleiroEsc[Linha][Coluna] = '.';
-				Tabuleiro[Linha][Coluna] = '!';
-				printf("\nVoce errou.\n");
-
-			}
-
-			if(TabuleiroId[Linha][Coluna] == 1){
-				printf("Voce afundou um submarino do inimigo\n");
-			}
-			else if(TabuleiroId[Linha][Coluna] == 2){
-				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 2) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 2) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 2) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 2)){
-					printf("Voce afundou um cruzador\n");
-				}
-			}
-			else if(TabuleiroId[Linha][Coluna] == 3){
-				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 3) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 3) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 3) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 3)){
-					if((Tabuleiro[Linha + 2][Coluna] == 'X' && TabuleiroId[Linha + 2][Coluna] == 3) || (Tabuleiro[Linha][Coluna + 2] == 'X' && TabuleiroId[Linha][Coluna + 2] == 3) || (Tabuleiro[Linha - 2][Coluna] == 'X' && TabuleiroId[Linha - 2][Coluna] == 3) || (Tabuleiro[Linha][Coluna - 2] == 'X' && TabuleiroId[Linha][Coluna - 2] == 3)){
-						printf("Voce afundo um encouracado");
-					}
-				}
-			}
-			else if(TabuleiroId[Linha][Coluna] == 4){
-				if((Tabuleiro[Linha + 1][Coluna] == 'X' && TabuleiroId[Linha + 1][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 1] == 'X' && TabuleiroId[Linha][Coluna + 1] == 4) || (Tabuleiro[Linha - 1][Coluna] == 'X' && TabuleiroId[Linha - 1][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 1] == 'X' && TabuleiroId[Linha][Coluna - 1] == 4)){
-					if((Tabuleiro[Linha + 2][Coluna] == 'X' && TabuleiroId[Linha + 2][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 2] == 'X' && TabuleiroId[Linha][Coluna + 2] == 4) || (Tabuleiro[Linha - 2][Coluna] == 'X' && TabuleiroId[Linha - 2][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 2] == 'X' && TabuleiroId[Linha][Coluna - 2] == 4)){
-						if((Tabuleiro[Linha + 3][Coluna] == 'X' && TabuleiroId[Linha + 3][Coluna] == 4) || (Tabuleiro[Linha][Coluna + 3] == 'X' && TabuleiroId[Linha][Coluna + 3] == 4) || (Tabuleiro[Linha - 3][Coluna] == 'X' && TabuleiroId[Linha - 3][Coluna] == 4) || (Tabuleiro[Linha][Coluna - 3] == 'X' && TabuleiroId[Linha][Coluna - 3] == 4)){
-							printf("Voce afundou um porta-aviao.\n");
-						}
-					}
-				}
-			}
-
-			for(int i = 0; i < 10; i++) {
-		    	for(int j = 0; j < 10; j++) {
-		        	printf("%c ", TabuleiroEsc[i][j]);
-		    	}
-		    printf("\n");
-			}
-
-			if(Acertos2 == 20){
-				printf("\n\nJogador 2 ganhou! Fim de jogo.");
-			}
-			else{ //Caso contrario, passa a vez
-				Vez--;
-			}
-
-		}
-	}
-	return(0);
-}
