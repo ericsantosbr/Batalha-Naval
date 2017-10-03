@@ -13,17 +13,17 @@
  * 3 - Optimizar o codigo com funcoes
  * 4 - Nao fazer a geracao do navio se perder caso o jogador insira uma casa proxima de uma ja ocupada e sim repetir o processo (Verificar se esse erro ainda ocorre)
  * 5 - Corrigir a proibicao de se inserir embarcacoes em posicoes extremamente especigicas, como:
- *   0 1 2 3 4 5 6 7 8 9 
- * 0 # . . . # . . # . # 
- * 1 . . # . # . . . . . 
- * 2 . . # . . . . . # . 
- * 3 . . . . . . # . . . 
- * 4 . . . . . . # . . # 
- * 5 . . . . . . # . . # 
- * 6 . . . . . . . . . . 
- * 7 . . . . . . . . . . 
- * 8 . . . . . . . . . . 
- * 9 . . . . . . . . . . 
+ *   0 1 2 3 4 5 6 7 8 9
+ * 0 # . . . # . . # . #
+ * 1 . . # . # . . . . .
+ * 2 . . # . . . . . # .
+ * 3 . . . . . . # . . .
+ * 4 . . . . . . # . . #
+ * 5 . . . . . . # . . #
+ * 6 . . . . . . . . . .
+ * 7 . . . . . . . . . .
+ * 8 . . . . . . . . . .
+ * 9 . . . . . . . . . .
  * onde o jogo nao permite inserir um encouracado para baixo na posicao 0 x 4 (Coluna x Linha)
 */
 
@@ -123,7 +123,7 @@ bool confere(int Linha, int Coluna, char tab[10][10]){
 			return true;
 		}
 		else
-			return false;		
+			return false;
 	}
 
 	else if((Coluna == 9 && Linha == 9)){
