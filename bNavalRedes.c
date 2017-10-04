@@ -83,8 +83,9 @@ int main(){
   	struct hostent *h;
 
   	casa Tabuleiro[TSIZE][TSIZE], Tabuleiro2[TSIZE][TSIZE];
-
-    printf("Selecione a opcao de funcionamento:\n \t 1 - Server \n\t 2 - Client\n\n_");
+  	printf("Bem-vindo ao batalha naval! Selecione o tipo de jogador que você será!\n");
+  	printf(" \t 1 - Server \n\t 2 - Client\n\n");
+    printf("Selecione a opcao de funcionamento: ");
     scanf("%d", &kind);
 	inicializa(Tabuleiro);
   	inicializa(Tabuleiro2);
@@ -163,7 +164,12 @@ int main(){
 				shot = tiro(Tabuleiro, msg[1], msg[2]);
 			}
 
-			if(strlen(msg)>3 && msg[3] == 'r'){
+			printf("Situação atual de sua frota:\n");
+			imprimeCampo(Tabuleiro, 0);
+			printf("Situação atual da frota de seu inimigo:\n");
+			imprimeCampo(Tabuleiro2, 0);
+
+			if(strlen(msg) > 3 && msg[3] == 'r'){
 				/**
 				 * Caso a linha e a coluna batam com a # no tabuleiro verdadeiro
 				 * do jogador 2, sera efetuado e mostrado o X em ambos os
@@ -197,7 +203,7 @@ int main(){
 			imprimeCampo(Tabuleiro2, 0);
 
 			printf("\nInsira a posição onde os misseis serão lançados!");
-			printf("Insira a coluna da posição desejada: ");
+			printf("\nInsira a coluna da posição desejada: ");
 			scanf("%d", &Coluna);
 			while(Coluna < 0 || Coluna > 9){
 				printf("\nColuna fora dos limites do tabuleiro, favor inserir uma entre 0 e 9.");
@@ -404,28 +410,140 @@ void imprimeCampo(casa T[TSIZE][TSIZE], int opt){
 	}
 }
 
-bool confere(casa T[TSIZE][TSIZE], int i, int j){
+// Solução porca, mas inverti o i e o j ddas funções confere e tiro, workaround rápido mas que
+// precisa ser revisto depois
 
-		if(T[i][j].c == '#') return false;
-		if(i-1>=0)
-			if(T[i-1][j].c == '#') return false;
-		if(i+1<TSIZE)
-			if(T[i+1][j].c == '#') return false;
-		if(j-1>=0)
-			if(T[i][j-1].c == '#') return false;
-		if(j+1<TSIZE)
-			if(T[i][j+1].c == '#') return false;
-		if(i-1>=0 && j-1>=0)
-			if(T[i-1][j-1].c == '#') return false;
-		if(i-1>=0 && j+1<TSIZE)
-			if(T[i-1][j+1].c == '#') return false;
-		if(i+1>TSIZE && j-1>=0)
-			if(T[i+1][j-1].c == '#') return false;
-		if(i+1<TSIZE && j+1>TSIZE)
-			if(T[i+1][j+1].c == '#') return false;
 
-		return true;
+bool confere(casa T[10][10], int Linha, int Coluna){
+
+	int i, j;
+	char tab[10][10];
+
+	for(i = 0; i < 10; i++)	{
+		for(j = 0; j < 10; j++){
+			tab[i][j] = T[i][j].c;
+		}
+	}
+
+	// Caso a posicao seja alguma fora das extremidades
+	if((Coluna > 0 && Coluna < 9) && (Linha > 0 && Linha < 9)){
+		if(tab[Linha][Coluna] != '#' && (tab[Linha + 1][Coluna] != '#' && tab[Linha][Coluna + 1] != '#' &&
+		tab[Linha - 1][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha + 1][Coluna + 1] != '#' &&
+		tab[Linha - 1][Coluna - 1] != '#' && tab[Linha + 1][Coluna - 1] != '#' && tab[Linha - 1][Coluna + 1] != '#')){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	// Caso a posicao seja alguma nos cantos
+	else if(Coluna == 0 && Linha == 0){
+		if(tab[Linha][Coluna] != '#' && tab[Linha + 1][Coluna] != '#' &&
+		   tab[Linha + 1][Coluna + 1] != '#' && tab[Linha][Coluna + 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	else if((Coluna == 9 && Linha == 9)){
+		if(tab[Linha][Coluna] != '#' && tab[Linha - 1][Coluna] != '#' &&
+		   tab[Linha - 1][Coluna - 1] != '#' && tab[Linha][Coluna - 1] != '#'){
+			return true;
+		   }
+		else
+			return false;
+	}
+
+	// Caso Linha esteja em um dos extremos (0 ou 9)
+	else if(Linha == 0){
+		if(tab[Linha][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha][Coluna + 1] != '#' &&
+		   tab[Linha + 1][Coluna + 1] != '#' && tab[Linha + 1][Coluna] != '#' && tab[Linha + 1][Coluna - 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	else if(Linha == 9){
+		if(tab[Linha][Coluna] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha][Coluna + 1] != '#' &&
+		   tab[Linha - 1][Coluna - 1] != '#'&& tab[Linha - 1][Coluna] != '#' && tab[Linha - 1][Coluna + 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	// Caso Coluna esteja em um dos extremos (0 ou 9)
+	else if(Coluna == 0){
+		if(tab[Linha][Coluna] != '#' && tab[Linha - 1][Coluna] != '#' && tab[Linha + 1][Coluna] != '#' &&
+		   tab[Linha - 1][Coluna + 1] != '#' && tab[Linha][Coluna + 1] != '#' && tab[Linha + 1][Coluna + 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	else if(Coluna == 9){
+		if(tab[Linha][Coluna] != '#' && tab[Linha - 1][Coluna] != '#' && tab[Linha + 1][Coluna] != '#' &&
+		   tab[Linha - 1][Coluna - 1] != '#' && tab[Linha][Coluna - 1] != '#' && tab[Linha + 1][Coluna - 1] != '#'){
+			return true;
+		}
+		else
+			return false;
+	}
+
+	else
+		return false;
 }
+
+// bool confere(casa T[TSIZE][TSIZE], int i, int j){
+
+// 		if(T[i][j].c == '#') return false;
+// 		if(i-1>=0)
+// 			if(T[i-1][j].c == '#') return false;
+// 		if(i+1<TSIZE)
+// 			if(T[i+1][j].c == '#') return false;
+// 		if(j-1>=0)
+// 			if(T[i][j-1].c == '#') return false;
+// 		if(j+1<TSIZE)
+// 			if(T[i][j+1].c == '#') return false;
+// 		if(i-1>=0 && j-1>=0)
+// 			if(T[i-1][j-1].c == '#') return false;
+// 		if(i-1>=0 && j+1<TSIZE)
+// 			if(T[i-1][j+1].c == '#') return false;
+// 		if(i+1>TSIZE && j-1>=0)
+// 			if(T[i+1][j-1].c == '#') return false;
+// 		if(i+1<TSIZE && j+1>TSIZE)
+// 			if(T[i+1][j+1].c == '#') return false;
+
+// 		return true;
+// }
+
+
+
+// bool confere(casa T[TSIZE][TSIZE], int j, int i){
+
+// 		if(T[i][j].c == '#') return false;
+// 		if(i-1>=0)
+// 			if(T[i-1][j].c == '#') return false;
+// 		if(i+1<TSIZE)
+// 			if(T[i+1][j].c == '#') return false;
+// 		if(j-1>=0)
+// 			if(T[i][j-1].c == '#') return false;
+// 		if(j+1<TSIZE)
+// 			if(T[i][j+1].c == '#') return false;
+// 		if(i-1>=0 && j-1>=0)
+// 			if(T[i-1][j-1].c == '#') return false;
+// 		if(i-1>=0 && j+1<TSIZE)
+// 			if(T[i-1][j+1].c == '#') return false;
+// 		if(i+1>TSIZE && j-1>=0)
+// 			if(T[i+1][j-1].c == '#') return false;
+// 		if(i+1<TSIZE && j+1>TSIZE)
+// 			if(T[i+1][j+1].c == '#') return false;
+
+// 		return true;
+// }
 
 void insereBarcos(casa T[TSIZE][TSIZE]){
 	int Coluna, Linha, i, Escolha;
@@ -448,7 +566,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 			printf("\nLinha fora dos limites do tabuleiro, favor inserir uma entre 0 e 9: ");
 			scanf("%d", &Linha);
 		}
-		if(confere(T, Coluna, Linha)){
+		if(confere(T, Linha, Coluna)){
 			T[Linha][Coluna].c = '#';
 			T[Linha][Coluna].id = 1;
 			i++;
@@ -458,9 +576,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 		imprimeCampo(T, 0);
 	}
 
-	//Insere cruzadores
-	i=3;
-	while(i<3){
+	while(i<7){
 		printf("\nInsira a posicao dos cruzadores (uma por vez)");
 
 		printf("\nInsira a coluna da posicao desejada: ");
@@ -575,8 +691,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 
 	}
 
-	i = 2;
-	while(i < 2){ //Contador utilizado para inserir todos os encouraçados no tabuleiro
+	while(i < 9){ //Contador utilizado para inserir todos os encouraçados no tabuleiro
 		printf("\nInsira a posicao dos encouracado (um por vez)");
 
 		printf("\nInsira a coluna da posicao desejada: ");
@@ -692,7 +807,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 		imprimeCampo(T, 0);
 	}
 	i = 1;
-	while(i < 1){ //Contador utilizado para inserir o porta-avião no tabuleiro
+	while(i < 10){ //Contador utilizado para inserir o porta-avião no tabuleiro
 		printf("\nInsira a posicao do porta-aviao");
 
 		printf("\nInsira a coluna da posicao desejada: ");
@@ -733,6 +848,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 						T[Linha - 1][Coluna].id = 4;
 						T[Linha - 2][Coluna].id = 4;
 						T[Linha - 3][Coluna].id = 4;
+						i++;
 					}
 					else{
 						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido. Favor escolher outra opcao.");
@@ -752,6 +868,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 						T[Linha + 1][Coluna].id = 4;
 						T[Linha + 2][Coluna].id = 4;
 						T[Linha + 3][Coluna].id = 4;
+						i++;
 					}
 					else{
 						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
@@ -771,6 +888,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 						T[Linha][Coluna - 1].id = 4;
 						T[Linha][Coluna - 2].id = 4;
 						T[Linha][Coluna - 3].id = 4;
+						i++;
 					}
 					else{
 						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
@@ -784,12 +902,13 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 						Escolha = 0;
 					}
 					else if(T[Linha][Coluna + 2].c != '#' && T[Linha][Coluna + 3].c != '#' && T[Linha][Coluna + 4].c != '#' && T[Linha + 1][Coluna + 2].c != '#' && T[Linha - 1][Coluna + 2].c != '#' && T[Linha + 1][Coluna + 3].c != '#' && T[Linha + 1][Coluna + 3].c != '#' && T[Linha - 1][Coluna + 4].c != '#' && T[Linha + 1][Coluna + 4].c != '#'){
-					T[Linha][Coluna + 1].c = '#';
-					T[Linha][Coluna + 2].c = '#';
-					T[Linha][Coluna + 3].c = '#';
-					T[Linha][Coluna + 1].id = 4;
-					T[Linha][Coluna + 2].id = 4;
-					T[Linha][Coluna + 3].id = 4;
+						T[Linha][Coluna + 1].c = '#';
+						T[Linha][Coluna + 2].c = '#';
+						T[Linha][Coluna + 3].c = '#';
+						T[Linha][Coluna + 1].id = 4;
+						T[Linha][Coluna + 2].id = 4;
+						T[Linha][Coluna + 3].id = 4;
+						i++;
 					}
 					else{
 						printf("\nPosicao proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.");
@@ -812,7 +931,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 	}
 }
 
-int tiro(casa T[TSIZE][TSIZE], char i, char j){
+int tiro(casa T[TSIZE][TSIZE], char j, char i){
 	printf("%c\t%c\n", i, i);
 	int ii = atoi(&i);
 	int ij = atoi(&j);
@@ -827,9 +946,8 @@ int tiro(casa T[TSIZE][TSIZE], char i, char j){
 	}
 	else{ //Caso contrario sera mostrado um "." no tabuleiro de visao do jogador 1 e um ! no tabuleiro verdadeiro do jogador 2
 		T[ii][ij].c = '!';
+		printf("\nO inimigo errou!\n");
 		return 0;
 	}
-
-
 }
 
