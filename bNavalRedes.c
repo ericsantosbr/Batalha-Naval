@@ -692,7 +692,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 	}
 
 	while(i < 9){ //Contador utilizado para inserir todos os encouraçados no tabuleiro
-		printf("\nInsira a posicao dos encouracado (um por vez)");
+		printf("\nInsira a posicao dos encouracados (um por vez)");
 
 		printf("\nInsira a coluna da posicao desejada: ");
 		scanf("%d", &Coluna);
@@ -713,7 +713,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 			T[Linha][Coluna].id = 3;
 			i++;
 			while(Escolha < 1 || Escolha > 5){
-				printf("\nPara completar seu cruzador voce tera a escolha de qual lado posiciona-lo. 1 - Cima, 2 - Baixo, 3 - Esquerda, 4 - Direita.");
+				printf("\nPara completar seu encouracado voce tera a escolha de qual lado posiciona-lo. 1 - Cima, 2 - Baixo, 3 - Esquerda, 4 - Direita.");
 				printf("\nCaso nao seja possivel posicionar o objeto com as opcoes anteriores ou queira cancelar a acao tecle 5.");
 				printf("\nTenha em mente que teclar 5 REMOVERA o objeto incial de sua posicao: ");
 				scanf("%d", &Escolha);
@@ -806,8 +806,9 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 
 		imprimeCampo(T, 0);
 	}
-	i = 1;
+	
 	while(i < 10){ //Contador utilizado para inserir o porta-avião no tabuleiro
+		printf("%d", i);
 		printf("\nInsira a posicao do porta-aviao");
 
 		printf("\nInsira a coluna da posicao desejada: ");
@@ -830,7 +831,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 			T[Linha][Coluna].id = 4;
 			i++;
 			while(Escolha < 1 || Escolha > 5){
-				printf("\nPara completar seu cruzador voce tera a escolha de qual lado posiciona-lo. 1 - Cima, 2 - Baixo, 3 - Esquerda, 4 - Direita.");
+				printf("\nPara completar seu porta-aviao voce tera a escolha de qual lado posiciona-lo. 1 - Cima, 2 - Baixo, 3 - Esquerda, 4 - Direita.");
 				printf("\nCaso nao seja possivel posicionar o objeto com as opcoes anteriores ou queira cancelar a acao tecle 5.");
 				printf("\nTenha em mente que teclar 5 REMOVERA o objeto incial de sua posicao: ");
 				scanf("%d", &Escolha);
@@ -927,6 +928,7 @@ void insereBarcos(casa T[TSIZE][TSIZE]){
 			printf("\nPosicao ja ocupada ou proxima demais de outro objeto.\nManter ao menos uma casa de distancia de qualquer outro objeto ja inserido.\n");
 			imprimeCampo(T, 0);
 		}
+		imprimeCampo(T, 0);
 		Escolha = 0;
 	}
 }
